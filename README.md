@@ -21,3 +21,9 @@ how to run the project
 5. shared preference -> local key value store
 
 
+<img width="1080" height="2424" alt="Screenshot_1768767429" src="https://github.com/user-attachments/assets/c9bd7667-580d-4c3f-9416-3cc89065ca15" />
+<img width="1080" height="2424" alt="Screenshot_1768767398" src="https://github.com/user-attachments/assets/ddaa79c7-3e9e-4143-b1aa-1d1b1ebbc261" />
+<img width="1080" height="2424" alt="Screenshot_1768767369" src="https://github.com/user-attachments/assets/29609937-d969-47da-81c2-633b3211f493" />
+<img width="1080" height="2424" alt="Screenshot_1768747642" src="https://github.com/user-attachments/assets/47c4e9d7-5ed9-4c84-abae-ed6849e5900f" />
+<img width="1080" height="2424" alt="Screenshot_1768767440" src="https://github.com/user-attachments/assets/d7ef426a-9895-4ac0-b6aa-85eeed6813d4" />
+<img width="1080" height="2424" alt="Screenshot_1768767435" src="https://github.com/user-attachments/assets/e0a2b505-6821-4278-bfe3-eeb9d1da0a70" />
