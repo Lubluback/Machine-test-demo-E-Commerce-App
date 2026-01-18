@@ -9,7 +9,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 1,
-      leading: Icon(Icons.arrow_back_ios_sharp, color: Color(0xff4F7B39)),
+      leading: Icon(Icons.arrow_back_ios_sharp, color: Colors.black),
       title: title,
     );
   }

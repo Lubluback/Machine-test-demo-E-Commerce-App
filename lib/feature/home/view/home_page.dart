@@ -1,222 +1,198 @@
-// import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:e_commerce_app_demo/core/custom_widgets/custom_text.dart';
+import 'package:e_commerce_app_demo/provider/product_provider.dart';
+import 'package:e_commerce_app_demo/feature/home/view/widgets/home_page_shimer.dart';
+import 'package:e_commerce_app_demo/feature/home/view/widgets/section_header_widget.dart';
+import 'package:e_commerce_app_demo/feature/home/view/widgets/time_box_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-// import '../../core/custom_widgets/custom_containers.dart';
-// import '../../core/custom_widgets/custom_text.dart';
+import '../../../core/custom_widgets/cached_network_image.dart';
+import '../../category_list/view/category_list.dart';
+import '../../product_list/view/product_list.dart';
+import 'widgets/category_widget.dart';
+import 'widgets/product_widget.dart';
 
-// class Home extends StatefulWidget {
-//   const Home({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
-//   @override
-//   State<Home> createState() => _HomeState();
-// }
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
 
-// class _HomeState extends State<Home> {
-//   final controller = CarouselSliderController();
+class _HomePageState extends State<HomePage> {
+  Duration _offerDuration = const Duration(hours: 2);
+  Timer? _timer;
 
-//   int selectedindex = 0;
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       //1
-//       body: SafeArea(
-//         child: Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: NestedScrollView(
-//             // Changes the way the inner and outer scroll are linked together
-//             floatHeaderSlivers: true,
-//             // This builds the scrollable content above the body
-//             headerSliverBuilder: (context, innerBoxIsScrolled) => [
-//               SliverAppBar(
-//                 automaticallyImplyLeading: false,
-//                 title: Column(
-//                   mainAxisSize: MainAxisSize.min,
-//                   children: [
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                       children: [
-//                         Image.asset(
-//                           "asset/Logo with name 1.png",
-//                           fit: BoxFit.contain,
-//                           height: 70,
-//                           // width: 100,
-//                         ),
-//                         IconButton(
-//                           icon: const Icon(
-//                             Icons.notifications_none,
-//                             size: 28,
-//                             color: Color(0xff4F7B39),
-//                           ),
-//                           onPressed: () {},
-//                         ),
-//                       ],
-//                     ),
-//                   ],
-//                 ),
-//                 expandedHeight: 100,
-//                 floating: true,
-//                 snap: true,
-//                 forceElevated: innerBoxIsScrolled,
-//               ),
-//             ],
-//             // The content of the scroll view
-//             body: GetBuilder<HomeController>(
-//               builder: (controller1) {
-//                 return CustomScrollView(
-//                   slivers: [
-//                     SliverList(
-//                       delegate: SliverChildBuilderDelegate(
-//                         childCount: 1,
-//                         (context, index) => Column(
-//                           children: [
-//                             SizedBox(
-//                               height: 50,
-//                               child: Padding(
-//                                 padding: const EdgeInsets.only(
-//                                   left: 20,
-//                                   right: 20,
-//                                 ),
-//                                 child: TextField(
-//                                   decoration: InputDecoration(
-//                                     hintText: "Search your needs here.....",
-//                                     prefixIcon: const Icon(Icons.search),
-//                                     border: OutlineInputBorder(
-//                                       borderSide: const BorderSide(
-//                                         color: Color(0xff4F7B39),
-//                                       ),
-//                                       borderRadius: BorderRadius.circular(30),
-//                                     ),
-//                                   ),
-//                                 ),
-//                               ),
-//                             ),
-//                             const SizedBox(height: 10),
-//                             CarouselSlider(
-//                               carouselController: controller,
-//                               items: [
-//                                 //1st Image of Slider
-//                                 Container(
-//                                   margin: const EdgeInsets.all(6.0),
-//                                   decoration: BoxDecoration(
-//                                     borderRadius: BorderRadius.circular(8.0),
-//                                     image: const DecorationImage(
-//                                       image: AssetImage(
-//                                         "asset/1st banner 2 1.png",
-//                                       ),
-//                                       fit: BoxFit.cover,
-//                                     ),
-//                                   ),
-//                                 ),
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_offerDuration.inSeconds == 0) {
+        timer.cancel();
+      } else {
+        setState(() {
+          _offerDuration -= const Duration(seconds: 1);
+        });
+      }
+    });
+  }
 
-//                                 //2nd Image of Slider
-//                                 Container(
-//                                   margin: const EdgeInsets.all(6.0),
-//                                   decoration: BoxDecoration(
-//                                     borderRadius: BorderRadius.circular(8.0),
-//                                     image: const DecorationImage(
-//                                       image: AssetImage(
-//                                         "asset/1st banner 2 1.png",
-//                                       ),
-//                                       fit: BoxFit.cover,
-//                                     ),
-//                                   ),
-//                                 ),
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
-//                                 //3rd Image of Slider
-//                                 Container(
-//                                   margin: const EdgeInsets.all(6.0),
-//                                   decoration: BoxDecoration(
-//                                     borderRadius: BorderRadius.circular(8.0),
-//                                     image: const DecorationImage(
-//                                       image: AssetImage(
-//                                         "asset/1st banner 2 1.png",
-//                                       ),
-//                                       fit: BoxFit.cover,
-//                                     ),
-//                                   ),
-//                                 ),
-//                               ],
+  String _twoDigits(int n) => n.toString().padLeft(2, '0');
 
-//                               //Slider Container properties
-//                               options: CarouselOptions(
-//                                 onPageChanged: (index, reason) {
-//                                   selectedindex = index;
-//                                   setState(() {});
-//                                 },
-//                                 height: 150,
-//                                 enlargeCenterPage: true,
-//                                 //  autoPlay: true,
-//                                 aspectRatio: 1,
-//                                 // autoPlayCurve: Curves.fastOutSlowIn,
-//                                 enableInfiniteScroll: true,
-//                                 //   autoPlayAnimationDuration: Duration(milliseconds: 800),
-//                                 viewportFraction: 1,
-//                                 scrollDirection: Axis.horizontal,
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Consumer<ProductProvider>(
+            builder: (context, model, child) {
+              if (model.isLoading) {
+                return HomeShimmer();
+              }
+              if (model.products.isEmpty) {
+                return Center(
+                  child: CustomText(
+                    text: 'No Product found',
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                );
+              }
+              final product = model.products;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// 🔍 SEARCH BAR
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Search products...',
+                        prefixIcon: const Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
 
-//                                 ///how much width want to take
-//                               ),
-//                             ),
-//                             const SizedBox(height: 5),
-//                             Row(
-//                               mainAxisAlignment: MainAxisAlignment.center,
-//                               children: List.generate(
-//                                 3,
-//                                 (index) => CircleAvatar(
-//                                   backgroundColor: selectedindex == index
-//                                       ? const Color(0xff4F7B39)
-//                                       : const Color(0xffDDEED4),
-//                                   radius: 8,
-//                                 ),
-//                               ),
-//                             ),
-//                             const SizedBox(height: 10),
-//                             const Row(
-//                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                               children: [
-//                                 CustomText(
-//                                   text: "Popular Products",
-//                                   color: Color(0xff4F7B39),
-//                                   fontSize: 18,
-//                                   fontWeight: FontWeight.w600,
-//                                 ),
-//                                 CustomText(
-//                                   text: "View all",
-//                                   color: Color(0xff4F7B39),
-//                                   fontSize: 15,
-//                                   fontWeight: FontWeight.w400,
-//                                 ),
-//                               ],
-//                             ),
-//                             const SizedBox(height: 10),
-//                             GridView.builder(
-//                               physics: const NeverScrollableScrollPhysics(),
-//                               shrinkWrap: true,
-//                               gridDelegate:
-//                                   const SliverGridDelegateWithFixedCrossAxisCount(
-//                                     childAspectRatio: 0.68,
-//                                     crossAxisCount: 2,
-//                                     crossAxisSpacing: 4.0,
-//                                     mainAxisSpacing: 4.0,
-//                                   ),
-//                               itemCount: controller1.list.length,
-//                               itemBuilder: (BuildContext context, int index) {
-//                                 return CustomContainers(
-//                                   model: controller1.list[index],
-//                                 );
-//                               },
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 );
-//               },
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+                  /// 🖼️ BANNERS
+                  SectionHeader(
+                    title: 'Featured Products',
+                    seeMoreNeed: false,
+                    onTap: () {},
+                  ),
+                  CarouselSlider.builder(
+                    itemCount: 3,
+                    itemBuilder: (context, index, realIndex) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: CustomNetworkImage(imageUrl: product[0].image),
+                        ),
+                      );
+                    },
+                    options: CarouselOptions(
+                      height: 160,
+                      autoPlay: true,
+                      autoPlayInterval: const Duration(seconds: 3),
+                      enlargeCenterPage: true,
+                      viewportFraction: 0.9,
+                      enableInfiniteScroll: true,
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  /// ⏰ LIMITED TIME OFFER
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade50,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const CustomText(
+                            text: 'Limited Time Offer',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          Row(
+                            children: [
+                              TimeBox(
+                                value: _twoDigits(_offerDuration.inHours),
+                              ),
+                              const Text(':'),
+                              TimeBox(
+                                value: _twoDigits(
+                                  _offerDuration.inMinutes.remainder(60),
+                                ),
+                              ),
+                              const Text(':'),
+                              TimeBox(
+                                value: _twoDigits(
+                                  _offerDuration.inSeconds.remainder(60),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  /// 📂 CATEGORY SECTION
+                  SectionHeader(
+                    title: 'Categories',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const CategoryPage()),
+                      );
+                    },
+                  ),
+                  CategoryPreview(topCategory: model.productCategory),
+
+                  /// 🛒 PRODUCT SECTION
+                  SectionHeader(
+                    title: 'Popular Products',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const ProductPage()),
+                      );
+                    },
+                  ),
+
+                  ProductPreview(topProduct: model.products),
+                  const SizedBox(height: 20),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}

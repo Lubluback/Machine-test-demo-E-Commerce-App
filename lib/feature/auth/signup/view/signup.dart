@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../core/custom_widgets/custom_elevatedbutton.dart';
 import '../../../../core/custom_widgets/custom_text.dart';
 import '../../../../core/custom_widgets/custom_textformfield.dart';
+import '../../../bottomnavigationbar/bottomnavigationbar.dart';
 import '../../login/view/login_screen.dart';
 import '../model/model.dart';
 import '../provider/signup_provider.dart';
@@ -99,6 +100,10 @@ class _SignupState extends State<Signup> {
                         );
                         signupProvider.createAccount(userDetials);
                       }
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (ctx) => MainScreen()),
+                      );
                     },
                     backgroundColor: const Color(0xff4F7B39),
                     borderRadius: 7,

@@ -1,4 +1,5 @@
 import 'package:e_commerce_app_demo/feature/auth/signup/view/signup.dart';
+import 'package:e_commerce_app_demo/feature/bottomnavigationbar/bottomnavigationbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +9,7 @@ import '../../../../core/custom_widgets/custom_textformfield.dart';
 import '../provider/login_provider.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -77,7 +78,12 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.white,
                     width: double.infinity,
                     height: 45,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (ctx) => MainScreen()),
+                      );
+                    },
                     backgroundColor: const Color(0xff4F7B39),
                     borderRadius: 10,
                     fontsize: 20,

@@ -1,70 +1,73 @@
-// import 'package:flutter/material.dart';
+import 'package:e_commerce_app_demo/core/utils/colors.dart';
+import 'package:e_commerce_app_demo/provider/product_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-// import 'Cart_page.dart';
-// import 'home_page.dart';
-// import 'order_page.dart';
-// import 'profile_page.dart';
+import '../cart/view/cart_page.dart';
+import '../Profile/view/profile_page.dart';
+import '../category_list/view/category_list.dart';
+import '../home/view/home_page.dart';
+import '../order/view/order_page.dart';
 
-// class BottomNavigationBarScreen extends StatefulWidget {
-//   const BottomNavigationBarScreen({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
-//   @override
-//   State<BottomNavigationBarScreen> createState() =>
-//       _BottomNavigationBarScreenState();
-// }
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
 
-// class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
-//   int selectedIndex = 0;
-//   void currentIndex(index) {
-//     selectedIndex = index;
-//   }
+class _MainScreenState extends State<MainScreen> {
+  int _currentIndex = 0;
 
-//   final _pageOptions = [const Home(), CartPage(), OrderPage(), ProfilePage()];
+  final List<Widget> _pages = const [
+    HomePage(),
+    CategoryPage(),
+    CartPage(),
+    OrderListPage(),
+    ProfilePage(),
+  ];
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       bottomNavigationBar: BottomNavigationBar(
-//         items: <BottomNavigationBarItem>[
-//           const BottomNavigationBarItem(
-//             label: 'Home',
-//             icon: Icon(Icons.home, color: Color(0xff4F7B39), size: 35),
-//           ),
-//           BottomNavigationBarItem(
-//             label: 'Cart',
-//             icon: GetBuilder<HomeController>(
-//               builder: (controller1) {
-//                 return Badge.count(
-//                   count: controller1.cartlist.length,
-//                   child: const Icon(
-//                     Icons.shopping_cart_rounded,
-//                     color: Color(0xff4F7B39),
-//                     size: 35,
-//                   ),
-//                 );
-//               },
-//             ),
-//           ),
-//           const BottomNavigationBarItem(
-//             label: 'Order',
-//             icon: Icon(Icons.favorite, color: Color(0xff4F7B39), size: 35),
-//           ),
-//           const BottomNavigationBarItem(
-//             label: 'Profile',
-//             icon: Icon(Icons.person, color: Color(0xff4F7B39), size: 35),
-//           ),
-//         ],
-//         type: BottomNavigationBarType.fixed,
-//         currentIndex: selectedIndex,
-//         selectedItemColor: Colors.black,
-//         iconSize: 40,
-//         onTap: (val) {
-//           setState(() {});
-//           currentIndex(val);
-//         },
-//         elevation: 0,
-//       ),
-//       body: _pageOptions[selectedIndex],
-//     );
-//   }
-// }
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ProductProvider>().fetchProducts();
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _pages[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        type: BottomNavigationBarType.fixed,
+        fixedColor: AppColors.primaryColor,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.category),
+            label: 'Category',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_shipping),
+            label: 'Order',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Profile',
+          ),
+        ],
+      ),
+    );
+  }
+}
