@@ -8,9 +8,11 @@ class CartProvider with ChangeNotifier {
 
   List<CartModel> _cartItems = [];
   bool _isLoading = false;
+  bool _isCheckoutLoading = false;
 
   List<CartModel> get cartItems => _cartItems;
   bool get isLoading => _isLoading;
+  bool get isCheckoutLoading => _isCheckoutLoading;
 
   Future<(bool, String)> addtoCart(CartModel product) async {
     final result = await _cartService.addToCart(product);
@@ -75,5 +77,22 @@ class CartProvider with ChangeNotifier {
     }
 
     return totalAmount;
+  }
+
+  Future<bool> checkout() async {
+    _isCheckoutLoading = true;
+    notifyListeners();
+    await _cartService.clearCart();
+
+    await Future.delayed(Duration(seconds: 2));
+    _isCheckoutLoading = false;
+
+    notifyListeners();
+    return true;
+  }
+
+  void clearCart() {
+    _cartItems.clear();
+    notifyListeners();
   }
 }

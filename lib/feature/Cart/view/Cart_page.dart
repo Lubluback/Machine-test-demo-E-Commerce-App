@@ -1,6 +1,9 @@
 import 'package:e_commerce_app_demo/core/custom_widgets/cached_network_image.dart';
 import 'package:e_commerce_app_demo/feature/cart/provider/cart_provider.dart';
 import 'package:e_commerce_app_demo/feature/cart/view/widget/cart_shimmer.dart';
+import 'package:e_commerce_app_demo/feature/cart/view/widget/checkout_success.dart';
+import 'package:e_commerce_app_demo/feature/order/model/order_model.dart';
+import 'package:e_commerce_app_demo/feature/order/provider/order_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -146,7 +149,34 @@ class _CartPageState extends State<CartPage> {
                   width: 100,
                   height: 45,
 
-                  onPressed: () {},
+                  onPressed: () {
+                    if (!cartModel.isCheckoutLoading) {
+                      cartModel.checkout().then((value) {
+                        if (value) {
+                          for (var items in cartModel.cartItems) {
+                            final newOrder = OrderModel(
+                              id: items.id,
+                              title: items.title,
+                              price: items.price,
+                              description: items.description,
+                              category: items.category,
+                              image: items.image,
+                              quantity: items.quantity,
+                            );
+                            context.read<OrderProvider>().addNewOrder(newOrder);
+                          }
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CheckoutSuccessPage(),
+                            ),
+                            (r) => false,
+                          );
+                          cartModel.clearCart();
+                        }
+                      });
+                    }
+                  },
                   backgroundColor: const Color(0xff4F7B39),
                   borderRadius: 10,
                   fontsize: 20,

@@ -54,4 +54,10 @@ class CartService {
       return false;
     }
   }
+
+  Future<void> clearCart() async {
+    try {
+      await _box.clear();
+    } catch (e) {}
+  }
 }

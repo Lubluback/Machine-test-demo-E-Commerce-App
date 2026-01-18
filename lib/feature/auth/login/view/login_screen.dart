@@ -1,3 +1,4 @@
+import 'package:e_commerce_app_demo/core/utils/snackbar.dart';
 import 'package:e_commerce_app_demo/feature/auth/signup/view/signup.dart';
 import 'package:e_commerce_app_demo/feature/bottomnavigationbar/bottomnavigationbar.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +17,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   bool _isPasswordVisible = false;
 
-  TextEditingController passwordcontroller = TextEditingController();
+  TextEditingController _passwordcontroller = TextEditingController();
   final formkey = GlobalKey<FormState>();
 
   void _onTapIsPasswordVisible() {
@@ -34,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Padding(
         padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
         child: Consumer<LoginProvider>(
-          builder: (context, signup, child) {
+          builder: (context, loginModel, child) {
             return Form(
               key: formkey,
               child: Column(
@@ -47,17 +48,17 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 25),
                   CustomTextformfield(
-                    controller: emailController,
+                    controller: _emailController,
                     labelText: 'Email',
                     prefixIcon: const Icon(Icons.person),
                     validator: (val) {
-                      return signup.email(val);
+                      return loginModel.email(val);
                     },
                   ),
                   const SizedBox(height: 10),
                   CustomTextformfield(
                     obscureText: _isPasswordVisible,
-                    controller: passwordcontroller,
+                    controller: _passwordcontroller,
                     labelText: 'Password',
                     prefixIcon: const Icon(Icons.no_encryption_rounded),
                     suffixIcon: IconButton(
@@ -69,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: _onTapIsPasswordVisible,
                     ),
                     validator: (val) {
-                      return signup.passwordValidation(val);
+                      return loginModel.passwordValidation(val);
                     },
                   ),
                   const SizedBox(height: 10),
@@ -79,10 +80,37 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     height: 45,
                     onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (ctx) => MainScreen()),
+                      final result = loginModel.userLogin(
+                        _emailController.text.trim(),
+                        _passwordcontroller.text.trim(),
                       );
+                      if (result == 0) {
+                        SnackbarUtil.show(
+                          context,
+                          message: 'login Successfull',
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                        );
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (ctx) => MainScreen()),
+                          (r) => false,
+                        );
+                      } else if (result == 1) {
+                        SnackbarUtil.show(
+                          context,
+                          message: 'Invalid password',
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                        );
+                      } else if (result == 2) {
+                        SnackbarUtil.show(
+                          context,
+                          message: 'Invalid Email',
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                        );
+                      }
                     },
                     backgroundColor: const Color(0xff4F7B39),
                     borderRadius: 10,

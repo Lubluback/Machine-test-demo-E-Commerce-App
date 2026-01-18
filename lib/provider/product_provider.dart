@@ -17,6 +17,10 @@ class ProductProvider extends ChangeNotifier {
   List<CategoryModel> get productCategory => _productCategory;
 
   Future<void> fetchProducts() async {
+    if (_products.isNotEmpty) {
+      // Calling api to rate limit
+      return;
+    }
     _isLoading = true;
     _error = null;
     notifyListeners();
