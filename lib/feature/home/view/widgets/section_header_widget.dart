@@ -1,3 +1,4 @@
+import 'package:e_commerce_app_demo/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class SectionHeader extends StatelessWidget {
@@ -28,7 +29,7 @@ class SectionHeader extends StatelessWidget {
               onTap: onTap,
               child: const Text(
                 'See more',
-                style: TextStyle(color: Colors.blue),
+                style: TextStyle(color: AppColors.primaryColor),
               ),
             ),
         ],

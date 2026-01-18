@@ -1,3 +1,4 @@
+import 'package:e_commerce_app_demo/core/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -98,12 +99,22 @@ class _SignupState extends State<Signup> {
                           email: _emailController.text.trim(),
                           password: _paswordController.text.trim(),
                         );
-                        signupProvider.createAccount(userDetials);
+                        signupProvider.createAccount(userDetials).then((value) {
+                          if (value == null) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (ctx) => MainScreen()),
+                            );
+                          } else {
+                            SnackbarUtil.show(
+                              context,
+                              message: value,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                            );
+                          }
+                        });
                       }
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (ctx) => MainScreen()),
-                      );
                     },
                     backgroundColor: const Color(0xff4F7B39),
                     borderRadius: 7,

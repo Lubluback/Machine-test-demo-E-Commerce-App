@@ -27,4 +27,10 @@ class OrderProvider with ChangeNotifier {
     _isLoading = false;
     notifyListeners();
   }
+
+  Future<void> clearOrder() async {
+    _orderItems.clear();
+    await _orderService.clearOrder();
+    notifyListeners();
+  }
 }

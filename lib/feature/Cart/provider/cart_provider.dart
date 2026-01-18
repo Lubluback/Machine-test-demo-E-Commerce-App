@@ -82,7 +82,6 @@ class CartProvider with ChangeNotifier {
   Future<bool> checkout() async {
     _isCheckoutLoading = true;
     notifyListeners();
-    await _cartService.clearCart();
 
     await Future.delayed(Duration(seconds: 2));
     _isCheckoutLoading = false;
@@ -91,8 +90,9 @@ class CartProvider with ChangeNotifier {
     return true;
   }
 
-  void clearCart() {
+  Future<void> clearCart() async {
     _cartItems.clear();
+    await _cartService.clearCart();
     notifyListeners();
   }
 }

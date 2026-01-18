@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/local_db.dart/shared_pref.dart';
 import '../../service/auth_services.dart';
 import '../model/model.dart';
 
@@ -41,6 +42,9 @@ class SignupProvider with ChangeNotifier {
 
   Future<String?> createAccount(UserModel user) async {
     final result = await _authService.saveUser(user);
+    if (result == null) {
+      SharedPref.setUserLoginStatus(user.email);
+    }
     return result;
   }
 }

@@ -35,4 +35,10 @@ class OrderService {
       return [];
     }
   }
+
+  Future<void> clearOrder() async {
+    try {
+      await _box.clear();
+    } catch (e) {}
+  }
 }

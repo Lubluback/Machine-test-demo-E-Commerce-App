@@ -42,4 +42,18 @@ class UserModel {
   String toString() {
     return 'UserModel(userId: $userId, name: $name, email: $email, password: $password)';
   }
+
+  UserModel copyWith({
+    String? userId,
+    String? name,
+    String? email,
+    String? password,
+  }) {
+    return UserModel(
+      userId: userId ?? this.userId,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      password: password ?? this.password,
+    );
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:e_commerce_app_demo/core/local_db.dart/shared_pref.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -39,6 +40,7 @@ class LoginProvider with ChangeNotifier {
       if (result.password != password) {
         return 1;
       }
+      SharedPref.setUserLoginStatus(email);
       return 0;
     } else {
       return 2;

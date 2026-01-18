@@ -49,4 +49,25 @@ class AuthService {
       return null;
     }
   }
+
+  Future<void> updateUserDetails(
+    String exisitngKey,
+    String email,
+    String name,
+  ) async {
+    try {
+      final isExists = _box.containsKey(exisitngKey);
+
+      if (isExists) {
+        final data = _box.get(exisitngKey);
+
+        final newDetails = data!.copyWith(email: email, name: name);
+        await _box.put(exisitngKey, newDetails);
+      } else {
+        log('key not exist $exisitngKey');
+      }
+    } catch (e) {
+      log('exist $e');
+    }
+  }
 }

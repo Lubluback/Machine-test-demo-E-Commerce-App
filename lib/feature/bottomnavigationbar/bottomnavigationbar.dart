@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../cart/view/cart_page.dart';
-import '../Profile/view/profile_page.dart';
+import '../profile/view/profile_page.dart';
 import '../category_list/view/category_list.dart';
 import '../home/view/home_page.dart';
 import '../order/view/order_page.dart';
